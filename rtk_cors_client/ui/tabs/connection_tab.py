@@ -94,9 +94,10 @@ class ConnectionTab(BaseTab):
         base_layout.addWidget(self.spin_alt, 1, 1)
 
         base_layout.addWidget(QLabel("Интервал GGA (с):"), 1, 2)
-        self.spin_gga_interval = QSpinBox()
-        self.spin_gga_interval.setRange(1, 60)
-        self.spin_gga_interval.setValue(2)
+        self.spin_gga_interval = QDoubleSpinBox()
+        self.spin_gga_interval.setRange(0.5, 60.0)
+        self.spin_gga_interval.setSingleStep(0.5)
+        self.spin_gga_interval.setValue(2.0)
         base_layout.addWidget(self.spin_gga_interval, 1, 3)
 
         base_layout.addWidget(QLabel("Шум координат (°):"), 2, 0)
