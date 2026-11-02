@@ -200,6 +200,12 @@ class SessionManager:
         except Exception as e:
             self._log(f"❌ Ошибка подключения: {e}", "error")
             self._emit("status_changed", "Ошибка подключения")
+            # освобождаем сокет при неудачном подключении (как в оригинале)
+            if self.sock is not None:
+                try:
+                    self.sock.close()
+                except Exception:
+                    pass
             return False
 
     def _make_gga(self) -> str:

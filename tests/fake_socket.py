@@ -14,6 +14,7 @@ class FakeSocket:
         self._responses = list(responses)
         self.sent = []          # всё, что отправил клиент (запрос, GGA...)
         self.closed = False
+        self.timed_out = False  # True, если recv хотя бы раз отдал b''
         self._connect_target = None
 
     # --- API сокета -----------------------------------------------------
@@ -31,6 +32,11 @@ class FakeSocket:
 
     def recv(self, bufsize):
         if not self._responses:
+            # Эмуляция таймаута реального сокета: сначала один пустой блок,
+            # затем — закрытие соединения (OSError), чтобы цикл завершился.
+            if not self.timed_out:
+                self.timed_out = True
+                return b""
             raise OSError("10038 not a socket")  # соединение «закрыто»
         return self._responses.pop(0)
 
